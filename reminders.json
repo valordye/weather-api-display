@@ -1,0 +1,14 @@
+{
+  "events": [
+    {
+      "date": "2026-10-11",
+      "time": "10:00",
+      "title": "ELEC 221 lab"
+    },
+    {
+      "date": "2026-10-12",
+      "time": "14:30",
+      "title": "Control Systems Quiz"
+    }
+  ]
+}
