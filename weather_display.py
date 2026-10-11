@@ -12,7 +12,7 @@ from waveshare_epd import epd2in13_V4
 REFRESH_INTERVAL = 60      # Update screen every 60 seconds
 FULL_REFRESH_EVERY = 15    # Full clean every 15 updates to prevent ghosting
 
-# Coordinates for Open-Meteo API (Default: Kingston, ON - update to your lat/lon)
+# Coordinates for Open-Meteo API
 LATITUDE = 44.23
 LONGITUDE = -76.48
 
@@ -72,9 +72,9 @@ def create_dashboard_canvas(epd):
 
     # Header
     draw.rectangle([(0, 0), (epd.height - 1, 16)], fill=0)
-    draw.text((45, 2), "MECHATRONICS DESK BOARD", fill=255, font=font)
+    draw.text((45, 2), "DESH BOARD", fill=255, font=font)
 
-    # Metrics & Data
+    # fetching live data
     temp = get_cpu_temp()
     ram_percent = psutil.virtual_memory().percent
     cpu_percent = psutil.cpu_percent()
@@ -97,34 +97,34 @@ def create_dashboard_canvas(epd):
     return image
 
 def main():
-    epd = epd2in13_V4.EPD()
+    epd = epd2in13_V4.EPD() #instantiates the waveshare model 
     update_count = 0
 
-    print("Starting Dashboard with Weather & Reminders...")
+    print("Starting Dashboard")
 
     try:
         while True:
-            if update_count % FULL_REFRESH_EVERY == 0:
-                print("Performing full refresh...")
+            if update_count % FULL_REFRESH_EVERY == 0: # remainder for fullrefreshevery iteratoins
+                print("Performing full refresh")
                 epd.init()
                 epd.Clear()
                 image = create_dashboard_canvas(epd)
                 epd.display(epd.getbuffer(image))
-            else:
+            else: #single flash update
                 print("Performing fast refresh...")
                 epd.init_fast()
                 image = create_dashboard_canvas(epd)
-                if hasattr(epd, 'display_fast'):
+                if hasattr(epd, 'display_fast'): # safety check for driver versions, checks if display_fast exists
                     epd.display_fast(epd.getbuffer(image))
                 else:
                     epd.display(epd.getbuffer(image))
 
             epd.sleep()
             update_count += 1
-            time.sleep(REFRESH_INTERVAL)
+            time.sleep(REFRESH_INTERVAL) # pauses execution for desired time
 
-    except KeyboardInterrupt:
-        print("\nStopping dashboard...")
+    except KeyboardInterrupt: # cleanup routine
+        print("\nStopping dashboard")
         epd.init()
         epd.Clear()
         epd.sleep()
