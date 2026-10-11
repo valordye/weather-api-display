@@ -7,7 +7,6 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 import psutil
 
-sys.path.append(os.path.expanduser('~/e-Paper/RaspberryPi_JetsonNano/python/lib'))
 from waveshare_epd import epd2in13_V4
 
 REFRESH_INTERVAL = 60      # Update screen every 60 seconds
